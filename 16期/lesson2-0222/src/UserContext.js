@@ -1,9 +1,9 @@
 import React from "react";
 
-// 创建Contetx，如果没有对应的Provider，value参数等同于传递给createContext的默认值
-export const UserContext = React.createContext();
-// 创建Provider，用于接收value，以传给消费组件
+// 创建context 农民种菜, 如果没有匹配到Provider，取值默认值
+export const UserContext = React.createContext({themeColor: "pink"});
+// 接收者 批发商批发菜
 export const UserProvider = UserContext.Provider;
 
-// 创建Consumer， 用于消费当前的context值，返回给一个React节点
+//消费者 吃菜
 export const UserConsumer = UserContext.Consumer;

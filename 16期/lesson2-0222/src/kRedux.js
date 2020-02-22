@@ -2,22 +2,25 @@ export function createStore(reducer, enhancer) {
   if (enhancer) {
     return enhancer(createStore)(reducer);
   }
-  // 当前状态
   let currentState = undefined;
-  // 回调
   let currentListeners = [];
   function getState() {
     return currentState;
   }
   function dispatch(action) {
     currentState = reducer(currentState, action);
+    // 监听函数是一个数组，那就循环吧
     currentListeners.map(listener => listener());
   }
+
+  //订阅，可以多次订阅
   function subscribe(listener) {
+    // 每次订阅，把回调放入回调数组
     currentListeners.push(listener);
   }
 
-  dispatch({type: "@@INIT/REDUX-kkb"});
+  // 取值的时候，注意一定要保证不和项目中的会重复
+  dispatch({type: "@INIT/REDUX-KKB"});
 
   return {
     getState,
@@ -27,27 +30,31 @@ export function createStore(reducer, enhancer) {
 }
 
 export function applyMiddleware(...middlewares) {
-  //返回的是强化以后的函数
   return createStore => (...args) => {
     const store = createStore(...args);
-    let dispatch = store.dispatch; //初始的dispatch
+    let dispatch = store.dispatch;
     const middleApi = {
       getState: store.getState,
-      dispatch //: (...args) => dispatch(...args)
+      dispatch
     };
+    // 给middleware参数，比如说dispatch
     const middlewaresChain = middlewares.map(middleware =>
       middleware(middleApi)
     );
-    // 聚合
-    dispatch = compose(...middlewaresChain)(dispatch); //加强版的dispatch，这个dispatch可以接受回调和object
+    dispatch = compose(...middlewaresChain)(dispatch);
+    return {
+      ...store,
 
-    return {...store, dispatch};
+      // 覆盖上面store里的dispatch
+      dispatch
+    };
   };
 }
 
 function compose(...funcs) {
   if (funcs.length === 0) {
     return arg => arg;
+    // return () => {};
   }
   if (funcs.length === 1) {
     return funcs[0];
