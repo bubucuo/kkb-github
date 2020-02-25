@@ -1,24 +1,24 @@
 import React, {useState} from "react";
 import ReactReduxPage from "./pages/ReactReduxPage";
 import RouterPage from "./pages/RouterPage";
-import RouteChildrenPage from "./pages/RouteChildrenPage";
-import RouteRenderPage from "./pages/RouteRenderPage";
+import RouteChildren from "./pages/RouteChildren";
 import RouteComponePage from "./pages/RouteComponePage";
 
 function App() {
   // const [num, setNum] = useState(0);
   return (
     <div className="App">
-      {/* <button onClick={() => setNum(num + 1)}>click</button> */}
+      {/* <button onClick={() => setNum(num + 1)}>change num {num}</button> */}
       {/* react redux 学习 */}
       {/* <ReactReduxPage num={num} /> */}
 
-      {/* Router 学习 */}
+      {/* router 学习 */}
       <RouterPage />
-      {/* <RouteChildrenPage /> */}
-      {/* <RouteRenderPage /> */}
 
-      {/* 比较Route的 component与render */}
+      {/* route children  */}
+      {/* <RouteChildren /> */}
+
+      {/* // ! 比较一下render和component,重点掌握  */}
       {/* <RouteComponePage /> */}
     </div>
   );

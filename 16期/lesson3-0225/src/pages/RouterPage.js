@@ -5,41 +5,45 @@ import UserPage from "./UserPage";
 import LoginPage from "./LoginPage";
 import PrivateRoute from "./PrivateRoute";
 
-// router在项目开发中，要放在根组件外层
 export default class RouterPage extends Component {
   render() {
     return (
-      <Router>
-        <Link to="/">首页</Link>
-        <Link to="/user">用户中心</Link>
-        <Link to="/login">登录</Link>
-        <Link to="/search/123">搜索</Link>
+      <div>
+        <h3>RouterPage</h3>
+        <Router>
+          <Link to="/">首页</Link>
+          <Link to="/user">用户中心</Link>
+          <Link to="/login">登录</Link>
+          <Link to="/search/123">搜索</Link>
 
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/login" component={LoginPage} />
-          {/* <Route path="/user" component={UserPage} /> */}
-          <PrivateRoute path="/user" component={UserPage} />
-          <Route path="/search/:id" component={SearchComponent} />
-        </Switch>
-      </Router>
+          {/*Route一定要包裹在Router之内 因为Route要适应history location，这些来自router  */}
+          {/* path值如果不写 则一直匹配 */}
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            {/* <Route path="/user" component={UserPage} /> */}
+            <PrivateRoute path="/user" component={UserPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/search/:id" component={SearchComponent} />
+            <Route render={() => <div>404</div>} />
+          </Switch>
+        </Router>
+      </div>
     );
   }
 }
 
+function DetailComponent(props) {
+  return <div>DetailComponent</div>;
+}
+
 function SearchComponent(props) {
-  console.log("props", props); //sy-log
+  console.log("SearchComponent", props); //sy-log
   const {id} = props.match.params;
   return (
     <div>
-      <h3>SearchComponent</h3>
-      <p>{id}</p>
+      SearchComponent - {id}
       <Link to={"/search/" + id + "/detail"}>详情</Link>
-      <Route path="/search/:id/detail" component={DetailComponent} />
+      <Route path={"/search/:" + id + "/detail"} component={DetailComponent} />
     </div>
   );
-}
-
-function DetailComponent(props) {
-  return <div>DetailComponent</div>;
 }

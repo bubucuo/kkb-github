@@ -17,7 +17,7 @@ function ListItemLink({to, name, ...rest}) {
   );
 }
 
-export default class RouteChildrenPage extends Component {
+export default class RouteChildren extends Component {
   render() {
     return (
       <div>

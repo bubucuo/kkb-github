@@ -1,13 +1,14 @@
 import React, {Component} from "react";
+// import {bindActionCreators} from "redux";
 
 const ValueContext = React.createContext();
 
-// connect
 export const connect = (
   mapStateToProps = state => state,
   mapDispatchToProps
 ) => WrappedComponent => {
   return class extends Component {
+    // 此时组件的所有生命周期都能获得this.context
     static contextType = ValueContext;
     constructor(props) {
       super(props);
@@ -16,23 +17,26 @@ export const connect = (
       };
     }
     componentDidMount() {
-      this.update();
       const {subscribe} = this.context;
+      this.update();
+      // 订阅
       subscribe(() => {
         this.update();
       });
     }
 
     update = () => {
-      const {getState, dispatch} = this.context;
-      const stateProps = mapStateToProps(getState());
+      const {getState, dispatch, subscribe} = this.context;
+      //  getState获取当前store的state
+      let stateProps = mapStateToProps(getState());
       let dispatchProps;
-      console.log("mapDispatchToProps", mapDispatchToProps); //sy-log
+      // mapDispatchToProps Object/Function
       if (typeof mapDispatchToProps === "object") {
         dispatchProps = bindActionCreators(mapDispatchToProps, dispatch);
       } else if (typeof mapDispatchToProps === "function") {
         dispatchProps = mapDispatchToProps(dispatch, this.props);
       } else {
+        // 默认
         dispatchProps = {dispatch};
       }
       this.setState({
@@ -42,15 +46,13 @@ export const connect = (
         }
       });
     };
-
     render() {
-      return <WrappedComponent {...this.props} {...this.state.props} />;
+      console.log("this.context", this.context); //sy-log
+      return <WrappedComponent {...this.state.props} />;
     }
   };
 };
 
-// Provider
-//  /context
 export class Provider extends Component {
   render() {
     return (
@@ -61,19 +63,17 @@ export class Provider extends Component {
   }
 }
 
-// let creators = {
-//   add: () => ({type: "ADD"}),
-//   minus: () => ({type: "MINUS"})
-// };
-
 function bindActionCreator(creator, dispatch) {
   return (...args) => dispatch(creator(...args));
 }
 
-// dispatch(add())
+// {
+//     add: () => ({type: "ADD"})
+//   }
 export function bindActionCreators(creators, dispatch) {
-  return Object.keys(creators).reduce((ret, item) => {
-    ret[item] = bindActionCreator(creators[item], dispatch);
-    return ret;
-  }, {});
+  const obj = {};
+  for (const key in creators) {
+    obj[key] = bindActionCreator(creators[key], dispatch);
+  }
+  return obj;
 }

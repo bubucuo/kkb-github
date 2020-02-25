@@ -7,7 +7,7 @@ import {Provider} from "react-redux";
 
 import store from "./store/";
 
-// 把Provider放在根组件外层，使子组件能获得store
+// 把store放在最顶层
 ReactDOM.render(
   <Provider store={store}>
     <App />

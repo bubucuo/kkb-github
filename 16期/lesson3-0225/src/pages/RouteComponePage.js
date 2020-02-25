@@ -28,12 +28,12 @@ export default class RouteComponePage extends Component {
           {/* <Route component={() => <FunctionChild count={count} />} /> */}
 
           {/* 下面才是正确的示范 */}
-          {/* <Route render={() => <Child count={count} />} /> */}
-          <Route render={() => <FunctionChild count={count} />} />
+          <Route render={() => <Child count={count} />} />
+          {/* <Route render={() => <FunctionChild count={count} />} /> */}
 
           {/* children 呢  */}
           {/* <Route children={() => <Child count={count} />} /> */}
-          <Route children={() => <FunctionChild count={count} />} />
+          {/* <Route children={() => <FunctionChild count={count} />} /> */}
         </Router>
       </div>
     );
