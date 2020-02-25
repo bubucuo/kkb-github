@@ -30,3 +30,8 @@ code {
 .pink {
   color: pink;
 }
+
+.active,
+.active * {
+  color: red;
+}
