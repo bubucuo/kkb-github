@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {Redirect} from "react-router-dom";
+// import {Redirect} from "react-router-dom";
+import Redirect from "../k-react-router-dom/Redirect";
 
 import {connect} from "react-redux";
 

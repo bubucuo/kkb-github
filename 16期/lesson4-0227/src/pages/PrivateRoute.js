@@ -1,5 +1,7 @@
 import React, {Component} from "react";
-import {Route, Redirect} from "react-router-dom";
+// import {Route, Redirect} from "react-router-dom";
+import Route from "../k-react-router-dom/Route";
+import Redirect from "../k-react-router-dom/Redirect";
 
 import {connect} from "react-redux";
 
