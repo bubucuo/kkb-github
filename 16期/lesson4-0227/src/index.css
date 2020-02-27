@@ -35,3 +35,9 @@ code {
 .active * {
   color: red;
 }
+
+a {
+  display: inline-block;
+  margin: 4px;
+  text-decoration: none;
+}
