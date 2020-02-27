@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-// import {Redirect} from "react-router-dom";
-import Redirect from "../k-react-router-dom/Redirect";
+import {Redirect} from "react-router-dom";
+
 import {connect} from "react-redux";
 
 export default connect(
@@ -15,7 +15,6 @@ export default connect(
     render() {
       const {isLogin, login, location} = this.props;
       const {redirect = "/"} = location.state || {};
-      console.log("props", this.props); //sy-log
       if (isLogin) {
         // 已经登录
         return <Redirect to={{pathname: redirect}} />;

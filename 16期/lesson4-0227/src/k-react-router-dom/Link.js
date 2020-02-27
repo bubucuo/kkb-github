@@ -2,17 +2,22 @@ import React, {Component} from "react";
 import {RouterContext} from "./RouterContext";
 
 export default class Link extends Component {
-  static contextType = RouterContext;
-  handleClick = event => {
+  handleClick = (event, history) => {
     event.preventDefault();
-    this.context.history.push(this.props.to);
+    history.push(this.props.to);
   };
   render() {
-    const {to} = this.props;
+    const {to, children} = this.props;
     return (
-      <a href={to} onClick={this.handleClick}>
-        {this.props.children}
-      </a>
+      <RouterContext.Consumer>
+        {context => (
+          <a
+            href={to}
+            onClick={event => this.handleClick(event, context.history)}>
+            {children}
+          </a>
+        )}
+      </RouterContext.Consumer>
     );
   }
 }
