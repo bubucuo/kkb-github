@@ -17,18 +17,13 @@ function App() {
         <Link to="/">首页</Link>
         <Link to="/user">用户中心</Link>
         <Link to="/login">登录</Link>
-        <Link to="/children">children</Link>
-        <Link to="/render">render</Link>
 
-        {/* <Switch> */}
-        <Route exact path="/" component={HomePage} />
-        <Route path="/user" component={UserPage} />
-        {/* <PrivateRoute path="/user" component={UserPage} /> */}
-        <Route path="/login" component={LoginPage} />
-
-        <Route path="/children" children={() => <div>children</div>} />
-        <Route path="/render" render={() => <div>render</div>} />
-        {/* </Switch> */}
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          {/* <Route path="/user" component={UserPage} /> */}
+          <PrivateRoute path="/user" component={UserPage} />
+          <Route path="/login" component={LoginPage} />
+        </Switch>
       </Router>
     </div>
   );
