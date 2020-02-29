@@ -15,8 +15,8 @@ import ModalSwitch from "./pages/ModalSwitch";
 // 课下写一下404的补录视频
 // 掌握React.Children
 // 掌握createElement与cloneElement
-// Switch使用
-// Route的组件外为什么又包一层Provider
+// Switch location使用
+// Route的组件为什么又包一层Provider
 
 function App() {
   return (
