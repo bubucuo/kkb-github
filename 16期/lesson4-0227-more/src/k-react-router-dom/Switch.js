@@ -38,7 +38,7 @@ export default class Switch extends Component {
                 : context.match;
             }
           });
-          console.log("element", element, React.isValidElement(element)); //sy-log
+          // console.log("element", element, React.isValidElement(element)); //sy-log
           // createElement(type, props)
           // return match
           //   ? React.createElement(element.type, {
