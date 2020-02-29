@@ -13,17 +13,47 @@ export default class Switch extends Component {
           const location = this.props.location || context.location;
           let element,
             match = null;
-          const {children} = this.props;
+          let {children} = this.props;
+          // children = [children];
+          // // this.props.children  数组形式、对象
+          // for (let i = 0; i < children.length; i++) {
+          //   let child = children[i];
+          //   if (match === null && React.isValidElement(child)) {
+          //     element = child;
+          //     const path = child.props.path;
+          //     match = path
+          //       ? matchPath(location.pathname, {...child.props, path})
+          //       : context.match;
+          //   }
+          // }
           React.Children.forEach(children, child => {
             if (match === null && React.isValidElement(child)) {
               element = child;
               const path = child.props.path;
               match = path
-                ? matchPath(location.pathname, {...child.props, path})
+                ? matchPath(location.pathname, {
+                    ...child.props,
+                    path
+                  })
                 : context.match;
             }
           });
-          return match ? React.cloneElement(element, {location}) : null;
+          console.log("element", element, React.isValidElement(element)); //sy-log
+          // createElement(type, props)
+          // return match
+          //   ? React.createElement(element.type, {
+          //       ...element.props,
+          //       location,
+          //       computedMatch: match
+          //     })
+          //   : null;
+          // cloneElement(element, otherProps)
+          return match
+            ? React.cloneElement(element, {
+                location,
+                computedMatch: match
+              })
+            : null;
         }}
       </RouterContext.Consumer>
     );

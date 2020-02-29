@@ -11,6 +11,8 @@ import LoginPage from "./pages/LoginPage";
 import PrivateRoute from "./pages/PrivateRoute";
 
 // 课下写一下404的补录视频
+// 掌握React.Children
+// 掌握createElement与cloneElement
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path="/render" render={() => <div>render</div>} />
           <PrivateRoute path="/user" component={UserPage} />
           <Route path="/login" component={LoginPage} />
+          {/* 如果Route没有path参数，将始终被匹配 */}
+          <Route render={() => <div>404</div>} />
         </Switch>
       </BrowserRouter>
     </div>
