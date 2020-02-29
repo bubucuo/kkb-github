@@ -1,5 +1,5 @@
 import React from "react";
-// import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
+// import {BrowserRouter, Route, Link, Switch} from "react-router-dom";
 import BrowserRouter from "./k-react-router-dom/BrowserRouter";
 import Route from "./k-react-router-dom/Route";
 import Link from "./k-react-router-dom/Link";
@@ -15,6 +15,7 @@ import ModalSwitch from "./pages/ModalSwitch";
 // 课下写一下404的补录视频
 // 掌握React.Children
 // 掌握createElement与cloneElement
+
 // Switch location使用
 // Route的组件为什么又包一层Provider
 
@@ -33,7 +34,7 @@ function App() {
         {/* <Switch location={{pathname: "/user"}}> */}
         <Switch>
           <Route exact path="/" component={HomePage} />
-          {/* <Route path="/user" component={UserPage} /> */}
+          <Route path="/user" component={UserPage} />
           <Route path="/children" children={() => <div>children</div>} />
           {/* <Route path="/search/:id" component={SearchComponent} /> */}
           <Route path="/search/:id" children={<SearchComponent />} />
@@ -41,7 +42,7 @@ function App() {
           <Route path="/render" render={() => <div>render</div>} />
           <Route path="/modalswicth" component={ModalSwitch} />
           <Route path="/login" component={LoginPage} />
-          <PrivateRoute path="/user" component={UserPage} />
+          {/* <PrivateRoute path="/user" component={UserPage} /> */}
           {/* 如果Route没有path参数，将始终被匹配 */}
           <Route render={() => <div>404</div>} />
         </Switch>
@@ -56,10 +57,9 @@ function DetailComonent(props) {
   return <div>DetailComonent</div>;
 }
 
-function SearchComponent() {
-  console.log("useParams", useParams(), useLocation(), useHistory()); //sy-log
-  // const {id} = props.match.params;
-  const {id} = useParams();
+function SearchComponent(props) {
+  console.log("use", useParams(), useLocation(), useHistory()); //sy-log
+  const {id} = useParams(); //props.match.params;
   return (
     <div>
       <div>SearchComponent-{id}</div>

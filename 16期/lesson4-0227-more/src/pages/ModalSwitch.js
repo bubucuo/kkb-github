@@ -45,6 +45,7 @@ class ModalSwitch extends React.Component {
       location.state.modal &&
       this.previousLocation !== location
     ); // not initial render
+    console.log("modal", isModal, this.previousLocation, location); //sy-log
     return (
       <div>
         <Switch location={isModal ? this.previousLocation : location}>
