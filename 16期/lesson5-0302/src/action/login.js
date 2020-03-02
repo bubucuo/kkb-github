@@ -6,17 +6,21 @@ export const loginAction = (dispatch, userInfo) => {
   UserService.login(userInfo).then(
     res => {
       // dispatch({type: "LOGIN_SUCCESS", payload: res});
-      MoreUserService.getMoreUserInfo(res).then(
-        moreRes => {
-          dispatch({type: "LOGIN_SUCCESS", payload: {...res, ...moreRes}});
-        },
-        err => {
-          //处理异常
-        }
-      );
+      moreInfoAction(dispatch, {...userInfo, ...res});
     },
     err => {
       dispatch({type: "LOGIN_FAILURE", payload: err});
+    }
+  );
+};
+
+const moreInfoAction = (dispatch, userInfo) => {
+  MoreUserService.getMoreUserInfo(userInfo).then(
+    res => {
+      dispatch({type: "LOGIN_SUCCESS", payload: {...userInfo, ...res}});
+    },
+    err => {
+      //处理异常
     }
   );
 };

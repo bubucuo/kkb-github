@@ -25,7 +25,6 @@ function loginReducer(state = {...initalUserInfo}, action) {
         userInfo: action.payload
       };
     case "LOGIN_FAILURE":
-      console.log("action", action.payload); //sy-log
       return {
         ...state,
         ...initalUserInfo,
