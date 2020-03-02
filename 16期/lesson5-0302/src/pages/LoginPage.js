@@ -29,7 +29,6 @@ export default connect(
       }
 
       const {name} = this.state;
-      console.log("err", err); //sy-log
       return (
         <div>
           <h3>LoginPage</h3>

@@ -17,6 +17,7 @@ export default connect(
         <div>
           <h3>UserPage</h3>
           <p>姓名：{userInfo.name}</p>
+          <p>金额：{userInfo.money} 元</p>
           <button onClick={logout}>退出登录</button>
         </div>
       );
