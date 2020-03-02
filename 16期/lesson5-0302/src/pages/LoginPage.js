@@ -9,9 +9,10 @@ export default connect(
   }),
   //mapDispatchToProps
   {
-    login: userInfo => dispatch => {
-      loginAction(dispatch, userInfo);
-    }
+    // login: userInfo => dispatch => {
+    //   loginAction(dispatch, userInfo);
+    // }
+    login: userInfo => ({type: "login", payload: userInfo})
   }
 )(
   class LoginPage extends Component {

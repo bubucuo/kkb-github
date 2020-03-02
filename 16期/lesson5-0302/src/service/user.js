@@ -4,7 +4,7 @@ export const UserService = {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (userInfo.name === "小明") {
-          resolve({name: "小明"});
+          resolve({id: 123, name: "omg原来是小明"});
         } else {
           reject({msg: "用户名或密码错误"});
         }
@@ -18,7 +18,7 @@ export const MoreUserService = {
   getMoreUserInfo(userInfo) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (userInfo.name === "小明") {
+        if (userInfo.id === 123) {
           resolve({money: "100"});
         } else {
           reject({msg: "获取详细信息错误"});
