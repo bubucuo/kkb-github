@@ -27,22 +27,18 @@ function* loginHandle(action) {
 // watcher saga
 
 function* loginSaga() {
-  console.log("哦哦哦"); //sy-log
+  // while (true) {
+  // const action = yield take("loginSaga");
+  // call 是一个会阻塞的 Effect。即 Generator 在调用结束之前不能执行或处理任何其他事情。
+  // yield call(loginHandle, action);
+  // console.log("loginSaga-res", action); //sy-log
 
-  while (true) {
-    const action = yield take("loginSaga");
-    // call 是一个会阻塞的 Effect。即 Generator 在调用结束之前不能执行或处理任何其他事情。
-    // yield call(loginHandle, action);
-    // console.log("loginSaga-res", action); //sy-log
-
-    // fork 是无阻塞型调用,
-    // 当我们 fork 一个 任务，任务会在后台启动，调用者也可以继续它自己的流程，而不用等待被 fork 的任务结束。
-    yield fork(loginHandle, action);
-    console.log("loginSaga-res", action); //sy-log
-  }
-
-  // yield takeEvery("loginSaga", loginHandle);
-  // console.log("takeEvery"); //sy-log
+  // fork 是无阻塞型调用,
+  // 当我们 fork 一个 任务，任务会在后台启动，调用者也可以继续它自己的流程，而不用等待被 fork 的任务结束。
+  // yield fork(loginHandle, action);
+  // console.log("loginSaga-res", action); //sy-log
+  // }
+  yield takeEvery("loginSaga", loginHandle);
 }
 
 export default loginSaga;

@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import BasicLayout from "../../layout/BasicLayout/";
-import {loginAction} from "../../action/login";
+// import {loginAction} from "../../action/login";
 import "./index.scss";
 
 export default connect(({user}) => ({user}), {
@@ -24,7 +24,7 @@ export default connect(({user}) => ({user}), {
     }
     render() {
       const {login, user, location} = this.props;
-      const {isLogin, loading, err} = user;
+      const {isLogin, loading, err, tip} = user;
       if (isLogin) {
         const {redirect = "/"} = location.state || {};
         return <Redirect to={redirect} />;
@@ -40,8 +40,9 @@ export default connect(({user}) => ({user}), {
           />
           <p className="red">{err.msg}</p>
           <button onClick={() => login({name})}>
-            {loading ? "loading..." : "登录"}
+            {loading ? "登录中..." : "登录"}
           </button>
+          <p className="green">{tip.msg}</p>
         </BasicLayout>
       );
     }

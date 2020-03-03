@@ -3,12 +3,13 @@ import BasicLayout from "../../layout/BasicLayout/";
 import {connect} from "react-redux";
 
 export default connect(({user}) => ({user}), {
+  // logout: userInfo => ({type: "logoutSaga", payload: userInfo})
   logout: userInfo => ({type: "logoutSaga", payload: userInfo})
 })(
   class UserPage extends Component {
     render() {
       const {user, logout} = this.props;
-      const {userInfo} = user;
+      const {userInfo, loading, err} = user;
       return (
         <BasicLayout
           title="我的淘宝"
@@ -17,8 +18,10 @@ export default connect(({user}) => ({user}), {
           <p>id：{userInfo.id}</p>
           <p>昵称：{userInfo.name}</p>
           <p>积分：{userInfo.money}</p>
-
-          <button onClick={() => logout(userInfo)}>退出登录</button>
+          <p className="red">{err}</p>
+          <button onClick={() => logout(userInfo)}>
+            {loading ? "退出登录中..." : "退出登录"}
+          </button>
         </BasicLayout>
       );
     }

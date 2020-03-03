@@ -6,7 +6,7 @@ const LoginService = {
         if (userInfo.name === "小明") {
           resolve({id: 123, name: "omg原来是小明"});
         } else {
-          reject({msg: "用户名或密码错误"});
+          reject({err: {msg: "用户名或密码错误"}});
         }
       }, 1000);
     });

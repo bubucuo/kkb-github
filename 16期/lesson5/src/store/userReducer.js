@@ -7,10 +7,12 @@ const initalUserInfo = {
     id: null,
     name: null
   },
+  tip: {}, //提示 信息
   err: {} //错误显示信息
 };
 export function userReducer(state = {...initalUserInfo}, action) {
   switch (action.type) {
+    case "LOGOUT_REQUEST":
     case "LOGIN_REQUEST":
       return {
         ...state,
@@ -26,12 +28,19 @@ export function userReducer(state = {...initalUserInfo}, action) {
       return {
         ...state,
         ...initalUserInfo,
-        err: action.payload
+        ...action.payload
       };
     case "LOGOUT_SUCCESS":
       return {
         isLogin: false,
-        ...initalUserInfo
+        ...initalUserInfo,
+        ...action.payload
+      };
+    case "LOGOUT_FAILURE":
+      return {
+        ...state,
+        ...initalUserInfo,
+        ...action.payload
       };
 
     default:

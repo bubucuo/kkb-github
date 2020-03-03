@@ -43,9 +43,17 @@ input {
   font-size: 16px;
 }
 
-.red {
+.red,
+.green {
   margin-left: 16px;
   text-align: left;
   font-size: 14px;
+}
+
+.red {
   color: red;
+}
+
+.green {
+  color: green;
 }
