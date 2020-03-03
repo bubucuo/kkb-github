@@ -2,20 +2,21 @@ import React, {Component} from "react";
 import {Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import BasicLayout from "../../layout/BasicLayout/";
-// import {loginAction} from "../../action/login";
+import {loginAction} from "../../action/login";
 import "./index.scss";
 
 export default connect(({user}) => ({user}), {
-  // login: userInfo => ({type: "LOGIN_SUCCESS", payload: userInfo})
-  // login: userInfo => dispatch => {
-  //   loginAction(dispatch, userInfo);
-  //   // dispatch({type: "LOGIN_REQUEST"});
-  //   // setTimeout(() => {
-  //   //   dispatch({type: "LOGIN_SUCCESS", payload: userInfo});
-  //   // }, 1000);
-  // }
-  // saga
   login: userInfo => ({type: "loginSaga", payload: userInfo})
+
+  // login: userInfo => ({type: "LOGIN_SUCCESS", payload: userInfo})
+  //login: userInfo => dispatch => {
+  // loginAction(dispatch, userInfo);
+  // dispatch({type: "LOGIN_REQUEST"}); //展示loading
+  // 去login请求
+  // setTimeout(() => {
+  //   dispatch({type: "LOGIN_SUCCESS", payload: userInfo});
+  // }, 1000);
+  //}
 })(
   class LoginPage extends Component {
     constructor(props) {
