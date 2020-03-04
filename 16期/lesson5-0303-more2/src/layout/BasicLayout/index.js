@@ -27,27 +27,29 @@ export default function BasicLayout(props) {
   }
   const {title, showTopBar} = match;
   return (
-    <div className={classnames("basicLayout")}>
+    <div className={classnames("basicLayout", "layout")}>
       {showTopBar && <TopBar title={title} />}
-      <Switch>
-        {routes.map(item => {
-          return item.guard ? (
-            <item.guard
-              key={item.path}
-              path={item.path}
-              component={item.component}
-              {...item.props}
-            />
-          ) : (
-            <Route
-              key={item.path}
-              path={item.path}
-              component={item.component}
-              {...item.props}
-            />
-          );
-        })}
-      </Switch>
+      <article>
+        <Switch>
+          {routes.map(item => {
+            return item.guard ? (
+              <item.guard
+                key={item.path}
+                path={item.path}
+                component={item.component}
+                {...item.props}
+              />
+            ) : (
+              <Route
+                key={item.path}
+                path={item.path}
+                component={item.component}
+                {...item.props}
+              />
+            );
+          })}
+        </Switch>
+      </article>
       <BottomNav menu={routes} />
     </div>
   );

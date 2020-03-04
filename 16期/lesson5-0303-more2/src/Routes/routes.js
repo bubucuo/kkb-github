@@ -38,14 +38,6 @@ const basicRoutes = [
     title: "订单列表",
     component: OlistPage
   },
-  // {
-  //   path: "/login",
-  //   title: "登录",
-  //   icon: "wode",
-  //   showTopBar: true,
-  //   showBottomBar: true,
-  //   component: LoginPage
-  // },
   {
     path: "/user",
     title: "用户中心",
@@ -58,22 +50,6 @@ const basicRoutes = [
     guard: PrivateRoute,
     shortIcon:
       "https://gw.alicdn.com/tfs/TB1OIxTcLc3T1VjSZLeXXbZsVXa-183-144.png?getAvatar=1"
-  },
-
-  {
-    path: "/login",
-    title: "登录",
-    icon: "wode",
-    component: LoginPage,
-    layout: BlankLayout
-  },
-  {
-    path: "",
-    showTopBar: true,
-    showBottomBar: true,
-    title: "404",
-    component: _404,
-    layout: BlankLayout
   }
 ];
 

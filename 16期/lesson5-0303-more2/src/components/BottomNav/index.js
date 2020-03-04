@@ -19,11 +19,9 @@ export default class BottomNav extends Component {
 
 function MenuItem({path, title, icon, children}) {
   return (
-    <li className="menuItem">
+    <NavLink exact to={path} activeClassName="selected" className="menuItem">
       <span className={"iconfont icon-" + icon}></span>
-      <NavLink exact to={path} activeClassName="selected">
-        {title}
-      </NavLink>
-    </li>
+      <div>{title}</div>
+    </NavLink>
   );
 }
