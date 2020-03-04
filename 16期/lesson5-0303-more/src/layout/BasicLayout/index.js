@@ -7,40 +7,33 @@ import {basicRoutes as routes} from "../../Routes/routes";
 import "./index.scss";
 import {matchAllRoute, matchRoute} from "../../Routes/matchRoute";
 import _404 from "../../pages/_404";
+import BlankLayout from "../BlankLayout";
 
 export default function BasicLayout(props) {
-  console.log("asas", props); //sy-log
   const {location} = props;
+  console.log("location", location); //sy-log
+  // 404
   const matchAll = matchAllRoute(location);
-
-  // 所有都不匹配，404
   if (!matchAll) {
     return <Route component={_404} />;
   }
-
+  //在路由表配置过路由，但是没有使用BasicLayout的框架的页面
   const match = matchRoute(routes, location);
-
-  const {layout, component} = matchAll;
-
-  // 不匹配当前
+  // const {lay}
   if (!match) {
-    return layout ? (
-      <Route component={layout} />
-    ) : (
-      <Route component={component} />
-    );
+    const {component} = matchAll;
+    return <Route component={BlankLayout} />;
   }
-  if (!match && component) {
-    return <Route component={layout} />;
-  }
+
+  // 这个地方返回的应该是使用BasicLayout的页面
   const {title, showTopBar} = match;
   return (
     <div className={classnames("basicLayout", "layout")}>
       {showTopBar && <TopBar title={title} />}
       <article>
         <Switch>
-          {routes.map(item => {
-            return item.guard ? (
+          {routes.map(item =>
+            item.guard ? (
               <item.guard
                 key={item.path}
                 path={item.path}
@@ -54,8 +47,8 @@ export default function BasicLayout(props) {
                 component={item.component}
                 {...item.props}
               />
-            );
-          })}
+            )
+          )}
         </Switch>
       </article>
       <BottomNav menu={routes} />

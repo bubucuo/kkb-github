@@ -43,7 +43,6 @@ const basicRoutes = [
     title: "用户中心",
     icon: "wode",
     _1stNav: true,
-
     showTopBar: true,
     showBottomBar: true,
     component: UserPage,

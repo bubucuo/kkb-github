@@ -1,5 +1,6 @@
 import allRoutes, {basicRoutes, blankRoutes} from "./routes";
 
+// 获取所有的配置过的路由
 function getAllRoutes() {
   let a = [];
   for (let i = 0; i < allRoutes.length; i++) {
@@ -9,7 +10,6 @@ function getAllRoutes() {
 }
 export const matchAllRoute = currentLocation => {
   const allRoutes = getAllRoutes();
-  console.log("allll", allRoutes); //sy-log
   for (let i = 0; i < allRoutes.length; i++) {
     let item = allRoutes[i];
     if (item.path === currentLocation.pathname) {
