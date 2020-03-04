@@ -1,37 +1,64 @@
-import React, {Component} from "react";
+import React from "react";
 import classnames from "classnames";
+import {Route, Switch} from "react-router-dom";
 import TopBar from "../../components/TopBar/";
 import BottomNav from "../../components/BottomNav/";
-import {Route} from "react-router-dom";
-
+import {basicRoutes as routes} from "../../Routes/routes";
 import "./index.scss";
+import {matchAllRoute, matchRoute} from "../../Routes/matchRoute";
+import _404 from "../../pages/_404";
 
-export default class BasicLayout extends Component {
-  componentWillUnmount() {
-    console.log("componentWillUnmount"); //sy-log
+export default function BasicLayout(props) {
+  console.log("asas", props); //sy-log
+  const {location} = props;
+  const matchAll = matchAllRoute(location);
+
+  // 所有都不匹配，404
+  if (!matchAll) {
+    return <Route component={_404} />;
   }
-  componentDidMount() {
-    const {
-      title = "默认",
-      shortIcon = "https://store-images.s-microsoft.com/image/apps.64108.9007199266248398.f50070aa-ca14-4881-9e29-fb874435dc3d.a620dd2f-083d-4523-bdd5-d50a527956d4"
-    } = this.props;
-    document.title = title;
-    document.getElementById("shortIcon").href = shortIcon;
-  }
-  render() {
-    const {children, title, path, component} = this.props;
-    // return (
-    //   <>
-    //     <Route component={BottomNav} />
-    //     <Route path={path} component={component} />
-    //   </>
-    // );
-    return (
-      <div className={classnames("basicLayout")}>
-        {/* <TopBar title={title} /> */}
-        <article>{children}</article>
-        {/* <BottomNav /> */}
-      </div>
+
+  const match = matchRoute(routes, location);
+
+  const {layout, component} = matchAll;
+
+  // 不匹配当前
+  if (!match) {
+    return layout ? (
+      <Route component={layout} />
+    ) : (
+      <Route component={component} />
     );
   }
+  if (!match && component) {
+    return <Route component={layout} />;
+  }
+  const {title, showTopBar} = match;
+  return (
+    <div className={classnames("basicLayout", "layout")}>
+      {showTopBar && <TopBar title={title} />}
+      <article>
+        <Switch>
+          {routes.map(item => {
+            return item.guard ? (
+              <item.guard
+                key={item.path}
+                path={item.path}
+                component={item.component}
+                {...item.props}
+              />
+            ) : (
+              <Route
+                key={item.path}
+                path={item.path}
+                component={item.component}
+                {...item.props}
+              />
+            );
+          })}
+        </Switch>
+      </article>
+      <BottomNav menu={routes} />
+    </div>
+  );
 }

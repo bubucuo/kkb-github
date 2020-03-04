@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 
-export default class _404 extends Component {
+export default class OlistPage extends Component {
   render() {
     return (
       <div>
-        <h3>404</h3>
+        <h3>OlistPage</h3>
       </div>
     );
   }

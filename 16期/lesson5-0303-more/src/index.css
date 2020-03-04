@@ -57,3 +57,7 @@ input {
 .green {
   color: green;
 }
+
+.selected {
+  color: orange;
+}

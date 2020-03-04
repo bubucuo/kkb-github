@@ -15,7 +15,7 @@ import "./index.scss";
 
 export default function BlankLayout(props) {
   return (
-    <div className={classnames("blankLayout")}>
+    <div className={classnames("blankLayout", "layout")}>
       <article>
         <Switch>
           {routes.map(item => {

@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 
-export default class _404 extends Component {
+export default class CartPage extends Component {
   render() {
     return (
       <div>
-        <h3>404</h3>
+        <h3>CartPage</h3>
       </div>
     );
   }
