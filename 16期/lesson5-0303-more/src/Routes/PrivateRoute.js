@@ -7,13 +7,13 @@ export default connect(
   ({user}) => ({
     isLogin: user.isLogin
   })
-)(function PrivateRoute({component: Cmp, isLogin, ...rest}) {
+)(function PrivateRoute({children, isLogin, ...rest}) {
   return (
     <Route
       {...rest}
       render={({location}) =>
         isLogin ? (
-          <Cmp {...rest} />
+          children
         ) : (
           <Redirect
             to={{pathname: "/login", state: {redirect: location.pathname}}}

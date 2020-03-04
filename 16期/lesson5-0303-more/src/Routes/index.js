@@ -1,10 +1,16 @@
 import React, {useState, useEffect} from "react";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-
+import HomePage from "../pages/HomePage/";
+import LoginPage from "../pages/LoginPage/";
+import UserPage from "../pages/UserPage/";
 import TopBar from "../components/TopBar/";
 import BottomNav from "../components/BottomNav/";
 import BasicLayout from "../layout/BasicLayout/";
-import routes from "./routes";
+import PrivateRoute from "./PrivateRoute";
+
+// const routes = [{
+//   path: '',component: ''
+// }]
 
 // todo 实现topBar的顶部title显示，注意优化，不要重复渲染
 export default function Routes(props) {
@@ -12,27 +18,27 @@ export default function Routes(props) {
     <Router>
       {/* 能获取到history location match吗，来自context */}
       {/* <BottomNav /> */}
-      <Route children={<TopBar routes={routes} />} />
-      <Route component={BottomNav} />
-      <Switch>
-        {routes.map(item => {
-          return item.guard ? (
-            <item.guard
-              {...item.props}
-              path={item.path}
-              key={item.path}
-              component={item.component}
-            />
-          ) : (
-            <Route
-              {...item.props}
-              path={item.path}
-              key={item.path}
-              component={item.component}
-            />
-          );
-        })}
-      </Switch>
+
+      {/* <Route component={TopBar} />
+      <Route component={BottomNav} /> */}
+
+      <Route component={BasicLayout}>
+        <Route component={TopBar} />
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/login" component={LoginPage} />
+          {/* <Route path="/user" component={UserPage} /> */}
+          {/* <PrivateRoute path="/user" component={UserPage} /> */}
+          <PrivateRoute path="/user">
+            <UserPage />
+          </PrivateRoute>
+        </Switch>
+        <Route component={BottomNav} />
+      </Route>
+
+      {/* <Route exact path="/" component={HomePage} /> */}
+      {/* <Route path="/login" component={LoginPage} />
+        <Route path="/user" component={UserPage} /> */}
     </Router>
   );
 }

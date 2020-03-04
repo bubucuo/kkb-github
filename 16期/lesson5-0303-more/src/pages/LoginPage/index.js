@@ -26,7 +26,6 @@ export default connect(({user}) => ({user}), {
     render() {
       const {login, user, location} = this.props;
       const {isLogin, loading, err, tip} = user;
-      console.log("asasas", location); //sy-log
       if (isLogin) {
         const {redirect = "/"} = location.state || {};
         return <Redirect to={redirect} />;

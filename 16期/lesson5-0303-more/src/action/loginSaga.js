@@ -14,6 +14,7 @@ import LoginService from "../service/login";
 
 // worker saga
 function* loginHandle(action) {
+  console.log("action", action); //sy-log
   yield put({type: "LOGIN_REQUEST"}); //展示loading
   try {
     const res1 = yield call(LoginService.login, action.payload);

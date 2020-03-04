@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import classnames from "classnames";
+import TopBar from "../../components/TopBar/";
+import BottomNav from "../../components/BottomNav/";
 import {Route} from "react-router-dom";
 
 import "./index.scss";
@@ -17,11 +19,19 @@ export default class BasicLayout extends Component {
     document.getElementById("shortIcon").href = shortIcon;
   }
   render() {
-    const {children, title, path, component, _className} = this.props;
+    const {children, title, path, component} = this.props;
+    // return (
+    //   <>
+    //     <Route component={BottomNav} />
+    //     <Route path={path} component={component} />
+    //   </>
+    // );
     return (
-      <article className={classnames(_className, "basicLayout")}>
-        {children}
-      </article>
+      <div className={classnames("basicLayout")}>
+        {/* <TopBar title={title} /> */}
+        <article>{children}</article>
+        {/* <BottomNav /> */}
+      </div>
     );
   }
 }
