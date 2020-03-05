@@ -1,5 +1,13 @@
 import React, {Component} from "react";
-import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+  useParams,
+  useLocation,
+  withRouter
+} from "react-router-dom";
 import HomePage from "./HomePage";
 import UserPage from "./UserPage";
 import LoginPage from "./LoginPage";
@@ -23,7 +31,7 @@ export default class RouterPage extends Component {
             {/* <Route path="/user" component={UserPage} /> */}
             <PrivateRoute path="/user" component={UserPage} />
             <Route path="/login" component={LoginPage} />
-            <Route path="/search/:id" component={SearchComponent} />
+            <Route path="/search/:id" children={<SearchComponent />} />
             <Route render={() => <div>404</div>} />
           </Switch>
         </Router>
@@ -32,18 +40,41 @@ export default class RouterPage extends Component {
   }
 }
 
-function DetailComponent(props) {
-  return <div>DetailComponent</div>;
+// function DetailComponent(props) {
+//   console.log("use", useLocation()); //sy-log
+//   return <div>DetailComponent</div>;
+// }
+
+class DetailComponent extends Component {
+  render() {
+    const Cmp = withRouter(
+      class Detail extends Component {
+        render() {
+          // 可以试试去掉withRouter
+          console.log("detail", this.props); //sy-log
+          return (
+            <div>
+              <div>DetailComponent</div>
+            </div>
+          );
+        }
+      }
+    );
+    return <Cmp />;
+  }
 }
 
 function SearchComponent(props) {
   console.log("SearchComponent", props); //sy-log
-  const {id} = props.match.params;
+  const {id} = useParams(); // props.match.params;
   return (
     <div>
       SearchComponent - {id}
       <Link to={"/search/" + id + "/detail"}>详情</Link>
-      <Route path={"/search/:" + id + "/detail"} component={DetailComponent} />
+      <Route
+        path={"/search/:" + id + "/detail"}
+        children={<DetailComponent />}
+      />
     </div>
   );
 }
