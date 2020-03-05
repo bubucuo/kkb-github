@@ -1,7 +1,7 @@
 export default {
   'menu.welcome': '欢迎',
-  // 'menu.ablout': '关于',
-  // 'menu.more': '更多',
+  'menu.about': '关于',
+  'menu.more': '更多',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
   'menu.admin': '管理页',
