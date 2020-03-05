@@ -77,7 +77,8 @@ if (isAntDesignProPreview) {
 
 export default {
   plugins,
-  hash: true,
+  hash: false,
+  //  history: 'hash',//启动哈希
   targets: {
     ie: 11,
   },
@@ -146,6 +147,32 @@ export default {
               icon: 'smile',
               path: '/more/index',
               component: './more/index',
+            },
+            {
+              path: '/more/components/Table/index',
+              component: './more/components/Table/index',
+            },
+            {
+              path: '/product/:id',
+              component: './product/$id',
+            },
+            {
+              path: '/channel/:id?',
+              component: './channel/$id$',
+            },
+            {
+              path: '/ofLayout/index',
+              component: './ofLayout/_layout',
+              routes: [
+                {
+                  path: '/ofLayout/index2',
+                  component: './ofLayout/index2',
+                },
+                {
+                  path: '/ofLayout/index',
+                  component: './ofLayout/index',
+                },
+              ],
             },
             {
               component: './404',
