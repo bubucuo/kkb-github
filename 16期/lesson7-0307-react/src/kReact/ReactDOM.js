@@ -1,71 +1,41 @@
-// !vnode代表虚拟dom节点
-// !node代表真实dom节点
-
 function render(vnode, container) {
+  console.log("vnode", vnode); //sy-log
   // vnode->node
-  const node = createNode(vnode, container);
-  node && container.appendChild(node);
+  const node = createNode(vnode);
+  //把node更新到container
+  container.appendChild(node);
 }
 
-// 返回一个真实的dom节点
-function createNode(vnode, parentNode) {
+// 根据vnode，创建一个node
+function createNode(vnode) {
   const {type, props} = vnode;
-  let node = null;
-  if (typeof type === "function") {
-    // node = type.isReactComponent;
-    node = type.prototype.isReactComponent
-      ? updateClassComponent(vnode, parentNode)
-      : updateFunctionComponent(vnode, parentNode);
-  } else if (type === "TEXT") {
+  let node;
+  if (type === "TEXT") {
     node = document.createTextNode("");
-  } else if (type) {
+  } else {
     node = document.createElement(type);
   }
-  if (type === undefined) {
-    // fragment
-    reconcilerChildren(vnode, parentNode);
-  } else {
-    reconcilerChildren(vnode, node);
-    updateNode(node, props);
-  }
+  updateNode(node, props);
+  reconcilerChildren(props.children, node);
   return node;
 }
 
-function reconcilerChildren(vnode, node) {
-  const {children} = vnode.props;
+function reconcilerChildren(children, node) {
   for (let i = 0; i < children.length; i++) {
+    // 遍历 创建元素
     render(children[i], node);
   }
 }
 
+// 更新节点上属性，如className、nodeValue等
 function updateNode(node, nextVal) {
   Object.keys(nextVal)
     .filter(k => k !== "children")
     .forEach(k => {
-      if (k.slice(0, 2) === "on") {
-        let eventName = k.slice(2).toLocaleLowerCase();
-        node.addEventListener(eventName, nextVal[k]);
-      } else {
-        node[k] = nextVal[k];
-      }
+      node[k] = nextVal[k];
     });
 }
 
-// 接收vnode，返回一个node
-function updateFunctionComponent(vnode, parentNode) {
-  const {type, props} = vnode;
-  const vvnode = type(props);
-  const node = createNode(vvnode, parentNode);
-  return node;
-}
-
-// 接收vnode，返回一个node
-function updateClassComponent(vnode, parentNode) {
-  const {type, props} = vnode;
-  const cmp = new type(props);
-  const vvnode = cmp.render();
-  const node = createNode(vvnode, parentNode);
-  return node;
-}
-
-export default {render};
+export default {
+  render
+};
