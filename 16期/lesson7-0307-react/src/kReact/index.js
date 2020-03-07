@@ -3,13 +3,17 @@
 
 // 接收type, props, children， 返回一个vnode
 function createElement(type, props, ...children) {
-  delete props.__source;
-  delete props.__self;
+  // console.log("createElement", arguments); //sy-log
+  if (props) {
+    delete props.__source;
+    delete props.__self;
+  }
 
   return {
-    type,
+    type: type,
     props: {
       ...props,
+      //!这里的处理与源码稍有不同，源里的话，只有一个元素，children是对象，多于一个的时候，是数组
       children: children.map(child =>
         typeof child === "object" ? child : createTextNode(child)
       )
