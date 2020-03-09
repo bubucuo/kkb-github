@@ -47,7 +47,7 @@ function updateNode(node, prevVal, nextVal) {
     });
 }
 
-function performUmitOfWork(fiber) {
+function performUnitOfWork(fiber) {
   // 更新当前
   const {type} = fiber;
   if (typeof type === "function") {
@@ -179,7 +179,7 @@ function reconcilerChildren(workInProgressFiber, children) {
 function workLoop(deadline) {
   // 有下一个任务，并且当前帧还没有结束
   while (nextUnitOfWork && deadline.timeRemaining() > 1) {
-    nextUnitOfWork = performUmitOfWork(nextUnitOfWork);
+    nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
   }
   if (!nextUnitOfWork && wipRoot) {
     // 没有任务了，并且根节点还在
