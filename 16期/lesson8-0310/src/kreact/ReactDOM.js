@@ -7,6 +7,9 @@ let wipRoot = null;
 // 现在的根节点
 let currentRoot = null;
 let deletions = null;
+//work in propgress fiber
+let wipFiber = null;
+let hookIndex = null;
 
 function render(vnode, container) {
   wipRoot = {
@@ -24,14 +27,24 @@ function createNode(vnode) {
     type === "TEXT"
       ? document.createTextNode("")
       : document.createElement(type);
-  updateNode(node, props);
+  updateNode(node, {}, props);
   return node;
 }
 
-function updateNode(node, nextVal) {
+function updateNode(node, prevVal, nextVal) {
+  // Object.keys(prevVal)
+  //   .filter(k => k !== "children").filter(k=>k).
+  //   .forEach(k => (node[k] = nextVal[k]));
+
   Object.keys(nextVal)
     .filter(k => k !== "children")
-    .forEach(k => (node[k] = nextVal[k]));
+    .forEach(k => {
+      if (k.slice(0, 2) === "on") {
+        node.addEventListener("click", nextVal[k]);
+      } else {
+        node[k] = nextVal[k];
+      }
+    });
 }
 
 function performUmitOfWork(fiber) {
@@ -70,10 +83,38 @@ function updateHostComponent(fiber) {
     fiber.node = createNode(fiber);
   }
   reconcilerChildren(fiber, fiber.props.children);
-  console.log("fiber", fiber); //sy-log
+}
+
+export function useState(init) {
+  const oldHooks = wipFiber.base && wipFiber.base.hooks[hookIndex];
+  console.log("oldHooks", oldHooks);
+  const hook = {state: oldHooks ? oldHooks.state : init, queue: []};
+  const actions = oldHooks ? oldHooks.queue : [];
+  actions.forEach(action => {
+    hook.state = action;
+  });
+  const setState = payload => {
+    hook.queue.push(payload);
+    wipRoot = {
+      node: currentRoot.node,
+      props: currentRoot.props,
+      base: currentRoot
+    };
+    nextUnitOfWork = wipRoot;
+  };
+  wipFiber.hooks.push(hook);
+  hookIndex++;
+
+  return [hook.state, setState];
 }
 
 function updateFunctionComponent(fiber) {
+  //记录下当前正在工作的fiber 并且重置hookIndex为0， hooks数组为[]
+  wipFiber = fiber;
+  hookIndex = 0;
+  wipFiber.hooks = [];
+  //
+
   const {type, props} = fiber;
   const children = [type(props)];
   reconcilerChildren(fiber, children);
@@ -136,7 +177,6 @@ function reconcilerChildren(workInProgressFiber, children) {
 
 // 调度diff或者是渲染任务
 function workLoop(deadline) {
-  console.log("deadline", deadline.timeRemaining()); //sy-log
   // 有下一个任务，并且当前帧还没有结束
   while (nextUnitOfWork && deadline.timeRemaining() > 1) {
     nextUnitOfWork = performUmitOfWork(nextUnitOfWork);
@@ -146,6 +186,7 @@ function workLoop(deadline) {
     // 提交
     commitRoot();
   }
+  requestIdleCallback(workLoop);
 }
 
 function commitRoot() {
@@ -167,9 +208,13 @@ function commitWorker(fiber) {
   if (fiber.effectTag === PLACEMENT && fiber.node !== null) {
     parentNode.appendChild(fiber.node);
   }
+  if (fiber.effectTag === UPDATE && fiber.node !== null) {
+    updateNode(fiber.node, fiber.base.props, fiber.props);
+    parentNode.appendChild(fiber.node);
+  }
   commitWorker(fiber.child);
   commitWorker(fiber.sibling);
 }
 
 requestIdleCallback(workLoop);
-export default {render};
+export default {render, useState};

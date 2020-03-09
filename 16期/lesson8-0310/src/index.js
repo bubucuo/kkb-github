@@ -1,15 +1,24 @@
-// import React from "react";
+// import React, {Component, useState} from "react";
 // import ReactDOM from "react-dom";
+
 import React from "./kreact/";
-import ReactDOM from "./kreact/ReactDOM";
+import ReactDOM, {useState} from "./kreact/ReactDOM";
 import Component from "./kreact/Component";
 import "./index.css";
 
 function FunctionComponent({name}) {
+  const [count, setCount] = useState(0);
   return (
     <div className="border function">
       hello, {name}
       <button onClick={() => console.log("omg")}>click</button>
+      <button
+        onClick={() => {
+          setCount(count + 1);
+          // setCount(count + 2);
+        }}>
+        count-{count}
+      </button>
     </div>
   );
 }
