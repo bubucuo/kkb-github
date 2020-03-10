@@ -1,17 +1,15 @@
 // import React from "react";
 // import ReactDOM from "react-dom";
-import React from "./kreact-2/";
-import ReactDOM, {useState} from "./kreact-2/ReactDOM";
-import Component from "./kreact-2/Component";
+import React from "./kreact/";
+import ReactDOM from "./kreact/ReactDOM";
+import Component from "./kreact/Component";
 import "./index.css";
 
 function FunctionComponent({name}) {
-  const [count, setCount] = useState(0);
   return (
     <div className="border function">
       hello, {name}
       <button onClick={() => console.log("omg")}>click</button>
-      <button onClick={() => setCount(count + 1)}>count-{count}</button>
     </div>
   );
 }
@@ -38,12 +36,12 @@ const jsx = (
     <div className="border">
       <h5>hello</h5>
     </div>
-    <FunctionComponent name="function" />
-    <ClassComponent name="class" color="red" />
-    <>
+    {/* <FunctionComponent name="function" /> */}
+    {/* <ClassComponent name="class" color="red" /> */}
+    {/* <>
       <h5>文本1</h5>
       <h5>文本2</h5>
-    </>
+    </> */}
 
     {/* {[1, 2, 3].map(item => {
       return (
