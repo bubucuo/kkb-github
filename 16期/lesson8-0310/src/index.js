@@ -36,8 +36,8 @@ const jsx = (
     <div className="border">
       <h5>hello</h5>
     </div>
-    {/* <FunctionComponent name="function" /> */}
-    {/* <ClassComponent name="class" color="red" /> */}
+    <FunctionComponent name="function" />
+    <ClassComponent name="class" color="red" />
     {/* <>
       <h5>文本1</h5>
       <h5>文本2</h5>

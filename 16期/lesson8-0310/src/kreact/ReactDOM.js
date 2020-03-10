@@ -1,3 +1,6 @@
+import {PLACEMENT} from "./CONST";
+// todo 拓展视频 useState 实现update 以及 DELETIONS
+
 // 下一个子任务
 let nextUnitOfWork = null;
 // work in progreess 工作中的fiber root
@@ -6,48 +9,62 @@ let wipRoot = null;
 // 现在的根节点
 let currentRoot = null;
 
+// 初始化
 function render(vnode, container) {
   wipRoot = {
     node: container,
     props: {children: [vnode]},
     base: currentRoot
   };
+  nextUnitOfWork = wipRoot;
 }
 
 // 根据vnode，创建一个node
 function createNode(vnode) {
   const {type, props} = vnode;
   let node;
-  if (typeof type === "function") {
-    node = type.isReactComponent
-      ? // node = type.prototype.isReactComponent
-        updateClassComponent(vnode)
-      : updateFunctionComponent(vnode);
-  } else if (type === "TEXT") {
+  if (type === "TEXT") {
     node = document.createTextNode("");
   } else if (type) {
     node = document.createElement(type);
-  } else {
-    node = document.createDocumentFragment();
   }
   updateNode(node, props);
-  reconcilerChildren(props.children, node);
   return node;
 }
 
-function reconcilerChildren(children, node) {
+// 构建fiber结构，遍历workInProgressFiber的子节点
+function reconcilerChildren(workInProgressFiber, children) {
+  // 构建fiber结构
+  // 数组
+  // 更新  删除 新增
+  let prevSibling = null;
+  let oldFiber = workInProgressFiber.base && workInProgressFiber.base.child;
   for (let i = 0; i < children.length; i++) {
-    // console.log("children", children[i]); //sy-log
     let child = children[i];
-    // 遍历 创建元素
-    // 判读children[i]类型
-    if (Array.isArray(child)) {
-      for (let j = 0; j < child.length; j++) {
-        render(child[j], node);
-      }
-    } else {
-      render(children[i], node);
+    let newFiber = null;
+    // todo 比较 type key
+
+    newFiber = {
+      type: child.type, //类型 区分不同的fiber，比如说function class host等
+      props: child.props, //属性参数等
+      node: null, //真实dom节点
+      base: null, //存储fiber，便于去比较
+      parent: workInProgressFiber,
+      effectTag: PLACEMENT
+    };
+
+    if (oldFiber) {
+      oldFiber = oldFiber.sibling;
     }
+    // parent
+    // child
+    if (i === 0) {
+      workInProgressFiber.child = newFiber;
+    } else {
+      prevSibling.sibling = newFiber;
+      // sibling
+    }
+    prevSibling = newFiber;
   }
 }
 
@@ -66,28 +83,43 @@ function updateNode(node, nextVal) {
     });
 }
 
-// function组件，返回node
-function updateFunctionComponent(vnode) {
-  const {type, props} = vnode;
-  const vvnode = type(props);
-  const node = createNode(vvnode);
-  return node;
+// function组件，构建fiber
+function updateFunctionComponent(fiber) {
+  const {type, props} = fiber;
+  const children = [type(props)];
+  reconcilerChildren(fiber, children);
 }
 
-function updateClassComponent(vnode) {
-  const {type, props} = vnode;
-  const cmp = new type(props); //实例化
-  const vvnode = cmp.render();
-  const node = createNode(vvnode);
-  return node;
+// 更新class组件，构建fiber
+function updateClassComponent(fiber) {
+  const {type, props} = fiber;
+  const cmp = new type(props);
+  const children = [cmp.render()];
+  reconcilerChildren(fiber, children);
 }
 
-function updateHostComponent(fiber) {}
+// 原生标签，，构建fiber
+function updateHostComponent(fiber) {
+  if (!fiber.node) {
+    fiber.node = createNode(fiber);
+  }
+  const {children} = fiber.props;
+  reconcilerChildren(fiber, children);
+}
 
+// 执行当前任务，指定下一个任务，具体逻辑看下面实现及注释
 function performUnitOfWork(fiber) {
   // 执行当前子任务
   // todo
-  updateHostComponent(fiber);
+  const {type} = fiber;
+  if (typeof type === "function") {
+    console.log("ooooo"); //sy-log
+    type.isReactComponent
+      ? updateClassComponent(fiber)
+      : updateFunctionComponent(fiber);
+  } else {
+    updateHostComponent(fiber);
+  }
   // 返回下一个子任务
   // 找到下个任务的原则：先找子元素
   if (fiber.child) {
@@ -104,6 +136,7 @@ function performUnitOfWork(fiber) {
   // return
 }
 
+// 看函数里具体注释
 function workLoop(deadline) {
   // 执行子任务
   // 返回下一个子任务
@@ -117,11 +150,40 @@ function workLoop(deadline) {
   if (!nextUnitOfWork && wipRoot) {
     // 提交
     // commit
+    commitRoot();
   }
   // 提交
+  requestIdleCallback(workLoop);
 }
 
 requestIdleCallback(workLoop);
+
+// 提交
+function commitRoot() {
+  commitWorker(wipRoot.child);
+  currentRoot = wipRoot;
+  wipRoot = null;
+}
+
+// 提交具体的fiber执行
+function commitWorker(fiber) {
+  if (!fiber) {
+    return;
+  }
+
+  // 向上查找
+  let parentNodeFiber = fiber.parent;
+  while (!parentNodeFiber.node) {
+    parentNodeFiber = parentNodeFiber.parent;
+  }
+  const parentNode = parentNodeFiber.node;
+  // 更新 删除 新增
+  if (fiber.effectTag === PLACEMENT && fiber.node !== null) {
+    parentNode.appendChild(fiber.node);
+  }
+  commitWorker(fiber.child);
+  commitWorker(fiber.sibling);
+}
 
 export default {
   render
