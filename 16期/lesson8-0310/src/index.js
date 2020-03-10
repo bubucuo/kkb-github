@@ -1,9 +1,8 @@
-// import React, {Component, useState} from "react";
+// import React from "react";
 // import ReactDOM from "react-dom";
-
-import React from "./kreact/";
-import ReactDOM, {useState} from "./kreact/ReactDOM";
-import Component from "./kreact/Component";
+import React from "./kreact-2/";
+import ReactDOM, {useState} from "./kreact-2/ReactDOM";
+import Component from "./kreact-2/Component";
 import "./index.css";
 
 function FunctionComponent({name}) {
@@ -12,21 +11,23 @@ function FunctionComponent({name}) {
     <div className="border function">
       hello, {name}
       <button onClick={() => console.log("omg")}>click</button>
-      <button
-        onClick={() => {
-          setCount(count + 1);
-          // setCount(count + 2);
-        }}>
-        count-{count}
-      </button>
+      <button onClick={() => setCount(count + 1)}>count-{count}</button>
     </div>
   );
 }
 
 class ClassComponent extends Component {
+  static defaultProps = {
+    color: "pink"
+  };
   render() {
-    const {name} = this.props;
-    return <div className="border function">hello, {name}</div>;
+    const {name, color} = this.props;
+    return (
+      <div className="border function">
+        hello, {name}
+        <p className={color}>defaultProps</p>
+      </div>
+    );
   }
 }
 
@@ -38,7 +39,7 @@ const jsx = (
       <h5>hello</h5>
     </div>
     <FunctionComponent name="function" />
-    <ClassComponent name="class" />
+    <ClassComponent name="class" color="red" />
     <>
       <h5>文本1</h5>
       <h5>文本2</h5>
@@ -61,7 +62,7 @@ ReactDOM.render(jsx, document.getElementById("root"));
 
 // !节点类型
 // 文本节点
-// html标签节点
+// html标签节点 HostComponent
 // class componet
 // function component
 // fragment

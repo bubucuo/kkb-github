@@ -48,6 +48,8 @@ function updateNode(node, prevVal, nextVal) {
 }
 
 function performUnitOfWork(fiber) {
+  console.log("type", fiber); //sy-log
+
   // 更新当前
   const {type} = fiber;
   if (typeof type === "function") {
@@ -82,12 +84,12 @@ function updateHostComponent(fiber) {
   if (!fiber.node) {
     fiber.node = createNode(fiber);
   }
-  reconcilerChildren(fiber, fiber.props.children);
+  const {children} = fiber.props;
+  reconcilerChildren(fiber, children);
 }
 
 export function useState(init) {
   const oldHooks = wipFiber.base && wipFiber.base.hooks[hookIndex];
-  console.log("oldHooks", oldHooks);
   const hook = {state: oldHooks ? oldHooks.state : init, queue: []};
   const actions = oldHooks ? oldHooks.queue : [];
   actions.forEach(action => {
@@ -189,6 +191,8 @@ function workLoop(deadline) {
   requestIdleCallback(workLoop);
 }
 
+requestIdleCallback(workLoop);
+
 function commitRoot() {
   commitWorker(wipRoot.child);
   currentRoot = wipRoot;
@@ -216,5 +220,4 @@ function commitWorker(fiber) {
   commitWorker(fiber.sibling);
 }
 
-requestIdleCallback(workLoop);
 export default {render, useState};
