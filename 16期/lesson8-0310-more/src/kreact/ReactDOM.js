@@ -98,14 +98,16 @@ function reconcilerChildren(workInProgressFiber, children) {
 function updateNode(node, prevVal, nextVal) {
   Object.keys(prevVal)
     .filter(k => k !== "children")
-    .filter(k => !(k in nextVal))
     .forEach(k => {
       if (k.slice(0, 2) === "on") {
         // 以on开头，就认为是一个事件，源码处理复杂一些，
         let eventName = k.slice(2).toLocaleLowerCase();
         node.removeEventListener(eventName, prevVal[k]);
       } else {
-        node[k] = "";
+        if (!(k in nextVal)) {
+          // 上一次的属性值出现过 下一次没有了 这个就需要置空
+          node[k] = "";
+        }
       }
     });
 
@@ -262,7 +264,6 @@ export function useState(init) {
   });
   const setState = action => {
     hook.queue.push(action);
-
     wipRoot = {
       node: currentRoot.node,
       props: currentRoot.props,
