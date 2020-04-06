@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {ThemeConsumer} from "../ThemeContext";
-import {UserConsumer} from "../userContext";
+import {UserConsumer} from "../UserContext";
 
 export default class MultipleContextPage extends Component {
   render() {

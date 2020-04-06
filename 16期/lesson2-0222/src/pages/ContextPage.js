@@ -3,7 +3,7 @@ import ContextTypePage from "./ContextTypePage";
 import ConsumerPage from "./ConsumerPage";
 import MultipleContextPage from "./MultipleContextPage";
 import {ThemeProvider} from "../ThemeContext";
-import {UserProvider} from "../userContext";
+import {UserProvider} from "../UserContext";
 
 // 使用contetx步骤
 // 1. 创建 createContext
